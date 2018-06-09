@@ -1,0 +1,10 @@
+import requests
+def text():
+    url=['http://www.17k.com/book/1398783.html','http://user.17k.com/62479988']
+    file='C:/Users/lenovo/Desktop/test.html'
+    with open('C:/Users/lenovo/Desktop/test.html','a',encoding='utf-8') as f:
+        for i in range(2):
+            header={'User-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'}
+            response = requests.get('http://www.17k.com/book/1398783.html',headers=header)
+            f.write(response.text)
+text£¨£©
