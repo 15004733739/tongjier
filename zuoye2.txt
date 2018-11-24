@@ -1,0 +1,281 @@
+
+18.11.24 1ti(movies)
+
+mysql> create table movies(
+    -> id int primary key not null unique auto_increment,
+    -> name varchar(45) not null unique,
+    -> year int not null,
+    -> director varchar(20) not null,
+    -> grade int not null);
+Query OK, 0 rows affected (0.26 sec)
+
+mysql> desc movies;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(45) | NO   | UNI | NULL    |                |
+| year     | int(11)     | NO   |     | NULL    |                |
+| director | varchar(20) | NO   |     | NULL    |                |
+| grade    | int(11)     | NO   |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+
+mysql> insert into movies(id,name,year,director,grade) values (1,"xiyangyang",2003,"xxx",7.9);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from movies;
++----+------------+------+----------+-------+
+| id | name       | year | director | grade |
++----+------------+------+----------+-------+
+|  1 | xiyangyang | 2003 | xxx      |     8 |
++----+------------+------+----------+-------+
+
+
+mysql> alter table movies modify grade float(10,2);
+
+Query OK, 1 row affected (4.72 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> desc movies;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(45) | NO   | UNI | NULL    |                |
+| year     | int(11)     | NO   |     | NULL    |                |
+| director | varchar(20) | NO   |     | NULL    |                |
+| grade    | float(10,2) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from movies;
++----+------------+------+----------+-------+
+| id | name       | year | director | grade |
++----+------------+------+----------+-------+
+|  1 | xiyangyang | 2003 | xxx      |  8.00 |
++----+------------+------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> update movies set grade=7.8 where id=1;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from movies;
++----+------------+------+----------+-------+
+| id | name       | year | director | grade |
++----+------------+------+----------+-------+
+|  1 | xiyangyang | 2003 | xxx      |  7.80 |
++----+------------+------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> alter table movies modify grade float(10,1);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from movies;
++----+------------+------+----------+-------+
+| id | name       | year | director | grade |
++----+------------+------+----------+-------+
+|  1 | xiyangyang | 2003 | xxx      |   7.8 |
++----+------------+------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into movies(name,year,director,grade) values ("kabuda",2006,"xiaobo",8.0);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into movies(name,year,director,grade) values ("cat and laoshu",2000,"jeck",8.6),("pag pag xia",2006,"wuming",8.2),("taiger return town",2008,"tangtang",8.7);
+Query OK, 3 rows affected (0.10 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from movies;
++----+--------------------+------+----------+-------+
+| id | name               | year | director | grade |
++----+--------------------+------+----------+-------+
+|  1 | xiyangyang         | 2003 | xxx      |   7.8 |
+|  2 | kabuda             | 2006 | xiaobo   |   8.0 |
+|  3 | cat and laoshu     | 2000 | jeck     |   8.6 |
+|  4 | pag pag xia        | 2006 | wuming   |   8.2 |
+|  5 | taiger return town | 2008 | tangtang |   8.7 |
++----+--------------------+------+----------+-------+
+
+mysql> select * from movies where name like "%re%";
++----+--------------------+------+----------+-------+
+| id | name               | year | director | grade |
++----+--------------------+------+----------+-------+
+|  5 | taiger return town | 2008 | tangtang |   8.7 |
++----+--------------------+------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from movies where director like "%ec%";
++----+----------------+------+----------+-------+
+| id | name           | year | director | grade |
++----+----------------+------+----------+-------+
+|  3 | cat and laoshu | 2000 | jeck     |   8.6 |
++----+----------------+------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from movies where year=2006;
++----+-------------+------+----------+-------+
+| id | name        | year | director | grade |
++----+-------------+------+----------+-------+
+|  2 | kabuda      | 2006 | xiaobo   |   8.0 |
+|  4 | pag pag xia | 2006 | wuming   |   8.2 |
++----+-------------+------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from movies where year like 2016;
+Empty set (0.00 sec)
+
+mysql> select * from movies where year like 2006;
++----+-------------+------+----------+-------+
+| id | name        | year | director | grade |
++----+-------------+------+----------+-------+
+|  2 | kabuda      | 2006 | xiaobo   |   8.0 |
+|  4 | pag pag xia | 2006 | wuming   |   8.2 |
++----+-------------+------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from movies where grade>8.2;
++----+--------------------+------+----------+-------+
+| id | name               | year | director | grade |
++----+--------------------+------+----------+-------+
+|  3 | cat and laoshu     | 2000 | jeck     |   8.6 |
+|  5 | taiger return town | 2008 | tangtang |   8.7 |
++----+--------------------+------+----------+-------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+18.11.24 2ti(collect)
+
+mysql> create table collect(
+    -> id int primary key not null unique auto_increment,
+    -> collect int not null default 1,
+    -> name varchar(20) not null);
+
+mysql> insert into collect(id,collect,name) values (1,1,"shoes");
+Query OK, 1 row affected (0.20 sec)
+
+mysql> insert into collect(name) values ("shoes"),("bag"),("pants"),("hat");
+Query OK, 4 rows affected (0.07 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from collect;
++----+---------+-------+
+| id | collect | name  |
++----+---------+-------+
+|  1 |       1 | shoes |
+|  2 |       1 | shoes |
+|  3 |       1 | bag   |
+|  4 |       1 | pants |
+|  5 |       1 | hat   |
++----+---------+-------+
+
+mysql> update collect set collect=0 where id=3 or id=1;
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 2  Changed: 1  Warnings: 0
+
+mysql> select * from collect;
++----+---------+-------+
+| id | collect | name  |
++----+---------+-------+
+|  1 |       0 | shoes |
+|  2 |       1 | shoes |
+|  3 |       0 | bag   |
+|  4 |       1 | pants |
+|  5 |       1 | hat   |
++----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> update collect set collect=1 where id=3;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from collect;
++----+---------+-------+
+| id | collect | name  |
++----+---------+-------+
+|  1 |       0 | shoes |
+|  2 |       1 | shoes |
+|  3 |       1 | bag   |
+|  4 |       1 | pants |
+|  5 |       1 | hat   |
++----+---------+-------+
+
+
+
+18.11.24 3ti(suiyi)
+
+mysql> use hello;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> 
+mysql> create table suiyi( id int primary key not null unique auto_increment, uername varchar(20), pattern varchar(20), logindate int not null);
+Query OK, 0 rows affected (1.15 sec)
+
+mysql> insert into suiyi(id,uername,pattern,logindate) values (1,"xiaotianshi","app",8);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into suiyi(uername,pattern,logindate) values ("tutu","app",45),("benben","pc",16),("baobao","ipad",5),("xixi","pc", 28);
+Query OK, 4 rows affected (0.07 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from suiyi;
++----+-------------+---------+-----------+
+| id | uername     | pattern | logindate |
++----+-------------+---------+-----------+
+|  1 | xiaotianshi | app     |         8 |
+|  2 | tutu        | app     |        45 |
+|  3 | benben      | pc      |        16 |
+|  4 | baobao      | ipad    |         5 |
+|  5 | xixi        | pc      |        28 |
++----+-------------+---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from suiyi order by logindate desc;
++----+-------------+---------+-----------+
+| id | uername     | pattern | logindate |
++----+-------------+---------+-----------+
+|  2 | tutu        | app     |        45 |
+|  5 | xixi        | pc      |        28 |
+|  3 | benben      | pc      |        16 |
+|  1 | xiaotianshi | app     |         8 |
+|  4 | baobao      | ipad    |         5 |
++----+-------------+---------+-----------+
+5 rows in set (0.10 sec)
+
+mysql> select case
+    -> when abs(datediff(logindate,now()))>30 then "you go death"
+    -> when abs(datediff(logindate,now()))>9 then "you te mo whether return"
+    -> when abs(datediff(logindate,now()))>7 then "come back right now"
+    -> end from suiyi;
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>锄禾，静夜思怎么背</title>
+</head>
+<body>
+<h1><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;《锄禾》</b></h1>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;锄 禾 日 当 午，</h3>   
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;汗 滴 禾 下 土，</h3>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;谁 知 盘 中 餐，</h3>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;粒 粒 皆 辛 苦，</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<h1><b>&nbsp;&nbsp;&nbsp;《静夜思》</b></h1>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;床&nbsp;前&nbsp;明&nbsp;月&nbsp;光，</h3>   
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;疑&nbsp;是&nbsp;地&nbsp;上&nbsp;霜，</h3>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;举&nbsp;头&nbsp;望&nbsp;明&nbsp;月，</h3>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;低&nbsp;头&nbsp;思&nbsp;故&nbsp;乡，</h3>
+</body>
+</html>
