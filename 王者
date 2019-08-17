@@ -1,0 +1,35 @@
+import numpy as np
+class wangzhe(object):
+    print("输入“对战”即可进行人机对战")
+    res = input("在此输入")
+    if res=="对战":
+        def renwu():
+            print("请选择你所要使用的英雄:后裔、大乔、典韦")
+            hero = input("您选择的英雄是：")
+            if hero=="大乔":
+                print(hero+" 战斗力：5000，防御力1000")
+            elif hero=="后裔":
+                print(hero+" 战斗力：10000，防御力8000")
+            elif hero=="典韦":
+                print(hero+" 战斗力：90000，防御力8000")
+            else:
+                print("您未拥有该英雄，无法查询该信息")
+            hero2 = np.random.choice(["典韦","小乔","荆轲","嬴政"])
+            if hero2=="大乔":
+                print("你所匹配的英雄是："+hero2+" 战斗力：4200，防御力1000")
+            elif hero2=="后裔":
+                print("你所匹配的英雄是："+hero2+" 战斗力：10000，防御力3000")
+            elif hero2=="典韦":
+                 print("你所匹配的英雄是："+hero2+" 战斗力：60000，防御力8000")
+            else:
+                print("你所匹配的英雄是："+hero2+" 战斗力：70000，防御力8000")
+            print("输入“come on”即可开始游戏")
+            res = input("在此输入")
+            if res=="come on":
+                 print("正在加载游戏页面")
+            else:
+                 print("输入有误，需要重新输入哦~")
+        renwu()
+    else:
+        print("您的输入有误")
+wangzhe()
