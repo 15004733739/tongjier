@@ -1,0 +1,46 @@
+6]:
+import re
+def checkContainUpper(pwd):
+    pattern = re.compile('[A-Z]+')
+    match = pattern.findall(pwd)
+    if match:
+        return True
+    else:
+        return False
+
+def checkContainNum(pwd):
+    pattern = re.compile('[0-9]+')
+    match = pattern.findall(pwd)
+    if match:
+        return True
+    else:
+        return False
+
+def checkContainLower(pwd):
+    pattern = re.compile('[a-z]+')
+    match = pattern.findall(pwd)
+
+    if match:
+        return True
+    else:
+        return False
+def checkPassword(pwd):
+    upperOK=checkContainUpper(pwd)#判断是否包含大写字母
+    lowerOK=checkContainLower(pwd)#判断是否包含小写字母
+    numOK=checkContainNum(pwd)#判断是否包含数字
+#     symbolOK=checkSymbol(pwd)#判断是否包含符号
+    print(upperOK)
+    print(lowerOK)
+    print(numOK)
+    return ( upperOK and lowerOK and numOK)
+
+
+def main():
+    if checkPassword('qweqwQWE12345'):
+        print('检测通过')
+    else:
+        print('检测未通过')
+
+
+if __name__ == '__main__':
+    main()
