@@ -1,0 +1,119 @@
+import random
+import http.client 
+import urllib
+import urllib3
+import time
+from redis import Redis
+from datetime import datetime
+import pymysql
+
+# Connect to the database
+# 连接mysql，host指定主机；port指定端口，如果mysql为默认端口3306可以不写；
+# user,password分别指定登录mysql的用户名和密码；
+# db指定数据库；charset指定字符集；
+connection = pymysql.connect(host='localhost',
+                             user='root',
+                             password='131415',
+                             db='liuyu',
+                             charset='utf8mb4',
+                              cursorclass=pymysql.cursors.DictCursor)
+
+
+
+
+ONLINE_LAST_MINUTES = 5
+redis = Redis()
+
+host  = "106.ihuyi.com"
+sms_send_uri = "/webservice/sms.php?method=Submit"
+ 
+#查看用户名 登录用户中心->验证码通知短信>产品总览->API接口信息->APIID
+account  = "C48856660"
+#查看密码 登录用户中心->验证码通知短信>产品总览->API接口信息->APIKEY
+password = "7505ea7957222ed2fe6fc2958311cdbd"
+ 
+class zhuCe(object):
+    def __init__(self):
+        pass
+    def youxiang(self):
+        print("请输入邮箱号码")
+        self.youxiang=input("")
+        print("您输入邮箱号码为：",self.youxiang)
+    def mima(self):
+        print("请输入密码")
+        self.mima_1=input("")
+        print("请输入确认密码")
+        self.mima_2=input("")
+        if self.mima_1==self.mima_2:
+            print("密码输入成功")
+            self.mima=self.mima_1
+        else:
+            print("两次密码输入不一致！！！")
+            self.mima()
+    def mark_online(self,user_id):  #将一个用户标记为online
+        now=int(time.time())
+        expires=now+ONLINE_LAST_MINUTES*60
+        print(expires)
+        all_users_key = 'online-users/%d' % (now//60)
+        user_key = 'user-activity/%s'%user_id
+        print(all_users_key,user_key)
+        p = redis.pipeline()
+        p.sadd(all_users_key,user_id)
+        p.set(user_key,now)
+        p.expireat(all_users_key,expires)
+        self.q=p.execute()
+    def yanzheng(self):
+        for i in range(1,4):
+            yanzheng_1=random.randrange(1000,9999)
+            print("请输入验证码：",yanzheng_1)
+            yanzheng_2=int(input(""))
+            if yanzheng_1==yanzheng_2:
+                print("验证通过")
+                self.duanxin()
+                break
+    def duanxin(self):
+        print("请输入手机号码")
+        self.shoujihao=input("")
+        self.mark_online(self.youxiang)
+        if self.q[2]== True:
+            print("请输入手机验证码")
+            self.send_sms()
+            self.yanzhengma()
+        else:
+            print("验证码超时！！！")
+    def send_sms(self):
+        self.mobile = self.shoujihao
+        text = "您的验证码是：121254。请不要把验证码泄露给其他人。"
+        params = urllib.parse.urlencode({'account': account, 'password' : password, 'content': text, 'mobile':self.mobile,'format':'json' })
+        headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+        conn = http.client.HTTPConnection(host, port=80, timeout=30)
+        conn.request("POST", sms_send_uri, params, headers)
+        response = conn.getresponse()
+        response_str = response.read()
+        conn.close()
+
+
+    def yanzhengma(self):
+        self.phone=input("")
+        self.T=False
+        if self.phone=="121254":
+            print("注册成功")
+            self.T= True
+            self.zhuijia()
+        else:
+            print("注册失败")
+            exit(0)
+    def zhuijia(self):
+        cursor = connection.cursor()
+        sql = "INSERT INTO liuyu(id,passward) VALUES (%s, %s);"
+        id = [self.youxiang]
+        passward = [self.mima]
+        # 执行SQL语句
+        cursor.execute(sql, [id, passward])
+        connection.commit()
+        #cursor.close()
+            
+qwe=zhuCe()
+qwe.youxiang()
+qwe.mima()
+qwe.yanzheng()
