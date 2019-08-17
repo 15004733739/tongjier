@@ -1,0 +1,32 @@
+from wxpy import *
+bot =Bot()
+my_friend = bot.friends()
+print(my_friend)
+my_friend = bot.friends().search('李彦婷')[0]
+my_friend.send('开')
+my_friend.send_image('timg.jpg')
+@bot.register()
+def print_others(msg):
+    print(msg)
+@bot.register(my_friend)
+def reply_my_friend(msg):
+    return '有事请稍后'.format(msg.text, msg.type)
+def get_friend_sex(friends):
+    male=female=other=0
+    for i in friends[1:]:
+        sex=i.sex
+        if sex==1:
+            male +=1
+        elif sex==2:
+            female +=1
+        else:
+            other +=1
+    return male,female,other
+bot=Bot(cache_path=True)
+bot.file_helper.send("hello world!")
+friends=bot.friends()
+male,female,other=get_friend_sex(friends)
+total=len(friends[1:])
+print("男性好友:%.2f%%" % (float(male) / total * 100))
+print("女性好友:%.2f%%" % (float(female) / total * 100))
+print("其他:%.2f%%" % (float(other) / total * 100))
