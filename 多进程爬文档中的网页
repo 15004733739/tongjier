@@ -1,0 +1,17 @@
+'''文件太大，都加载到内存不太好，应该用生成器，用多少取多少加载到内存，用多进程处理，
+安全起见，先把小部分复制到一个文件里做实验，嘻嘻嘻'''
+
+import re
+with open('C:/Users/lenovo/Desktop/yidong_data.txt','r',encoding='utf-8') as f:
+    text=f.readlines()
+    #print(text)
+
+tag = re.findall(r'"([a-zA-z]+://[^\s]*)"', str(text))
+print(type(tag))
+
+with open('C:/Users/lenovo/Desktop/yidong_data1.txt',"w") as f:
+   
+    #f.writelines(line+'\n' for line in tag)
+    for line in tag:
+        f.write(line)
+        f.write('\n')#显示写入换行
